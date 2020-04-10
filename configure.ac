@@ -1,5 +1,5 @@
 
-AC_INIT(resiprocate,1.12.0~beta9)
+AC_INIT(resiprocate,1.12.0~beta14)
 AC_CONFIG_SRCDIR(repro/repro.cxx)
 
 SO_RELEASE=`echo $PACKAGE_VERSION | cut -f1,2 -d.`
@@ -287,6 +287,12 @@ reproplugindir='${pkglibdir}/repro/plugins'
 AC_SUBST([returnpkglibdir])
 returnpkglibdir='${pkglibdir}/reTurnServer'
 
+AM_CONDITIONAL(BUILD_RETURN, false)
+AC_ARG_WITH(return,
+[  --with-return           Build reTurn client and server],
+ [AC_DEFINE_UNQUOTED(BUILD_RETURN, , BUILD_RETURN)
+ AM_CONDITIONAL(BUILD_RETURN, true)], )
+
 AM_CONDITIONAL(BUILD_REND, false)
 AC_ARG_WITH(rend,
 [  --with-rend             Build rend],
@@ -336,7 +342,7 @@ AC_ARG_WITH(python,
 [  --with-python           Build components requiring Python],
  [AC_DEFINE_UNQUOTED(BUILD_PYTHON, , BUILD_PYTHON)
  AM_CONDITIONAL(BUILD_PYTHON, true)
- PKG_CHECK_MODULES([DEPS_PYTHON], [python >= 2.7])
+ PKG_CHECK_MODULES([DEPS_PYTHON], [python >= 3.6])
  AC_SUBST(PYCXX_SRCDIR)
  if [ ! test -e "${PYCXX_SRCDIR}/cxx_extensions.cxx" ];
  then
